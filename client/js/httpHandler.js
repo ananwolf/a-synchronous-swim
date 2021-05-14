@@ -6,6 +6,33 @@
   // TODO: build the swim command fetcher here
   //
 
+  const fetchSwimCommand = () => {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl,
+      success: (data) => {
+        SwimTeam.move(data)
+      }
+    });
+  };
+
+  const fetchRandomSwim = (command) => {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl,
+      data: {
+        command: command
+      },
+      success: (data) => {
+        SwimTeam.move(data)
+      }
+    });
+  };
+
+  $("#fetchRandom").on('click', (event) => {
+    fetchRandomSwim('randomMove');
+  });
+
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
   // Note: remember to fix the URL below.
@@ -17,7 +44,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: serverUrl,
       cache: false,
       contentType: false,
       processData: false,
