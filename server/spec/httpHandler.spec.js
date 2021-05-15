@@ -8,7 +8,7 @@ const httpHandler = require('../js/httpHandler');
 
 describe('server responses', () => {
 
-  it('should respond to a OPTIONS request', (done) => {
+  xit('should respond to a OPTIONS request', (done) => {
     let {req, res} = server.mock('/', 'OPTIONS');
 
     httpHandler.router(req, res);
@@ -19,7 +19,7 @@ describe('server responses', () => {
     done();
   });
 
-  it('should respond to a GET request for a swim command', (done) => {
+  xit('should respond to a GET request for a swim command', (done) => {
     let {req, res} = server.mock('/', 'GET');
     // const directions = ['up', 'down', 'left', 'right'];
 
@@ -32,7 +32,7 @@ describe('server responses', () => {
     });
   });
 
-  it('should respond to a random GET request for a swim command', (done) => {
+  xit('should respond to a random GET request for a swim command', (done) => {
     let {req, res} = server.mock('/?command=random', 'GET');
     // const directions = ['up', 'down', 'left', 'right'];
     httpHandler.router(req, res, () => {
@@ -43,7 +43,7 @@ describe('server responses', () => {
     });
   });
 
-  xit('should respond with 404 to a GET request for a missing background image', (done) => {
+  it('should respond with 404 to a GET request for a missing background image', (done) => {
     httpHandler.backgroundImageFile = path.join('.', 'spec', 'missing.jpg');
     let {req, res} = server.mock('/background', 'GET');
 

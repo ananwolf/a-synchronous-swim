@@ -20,16 +20,35 @@ module.exports.initialize = (queue) => {
 };
 
 module.exports.router = (req, res, next = ()=>{}) => {
-  console.log('Serving request type ' + req.method + ' for url ' + req.url);
+  console.log('Serving request type ' + req.method + ' for url ' +
+  req.url);
 
   if (req.url === '/' && req.method === 'GET') {
     res.writeHead(200, headers);
     res.end(queue.dequeue());
+    next();
   }
 
   if (req.url === '/?command=randomMove' && req.method === 'GET') {
     res.writeHead(200, headers);
     res.end(getRandom());
+    next();
+  }
+
+  if (req.url === '/background' && req.method === 'GET') {
+    console.log('this is the image at backgroundImageFile: ' + module.exports.backgroundImageFile);
+
+    fs.readFile(module.exports.backgroundImageFile, (err, data) => {
+      if (err) {
+        res.writeHead(404, headers);
+        console.log('No Data');
+      } else {
+        res.writeHead(200, headers);
+        res.write(data, 'binary');
+      }
+      res.end();
+      next();
+    });
   }
 
   if (req.url === '/' && req.method === 'POST') {
@@ -38,9 +57,6 @@ module.exports.router = (req, res, next = ()=>{}) => {
       queue.enqueue(data);
     })
     res.end();
+    next();
   }
-
-  res.writeHead(200, headers);
-  res.end();
-  next(); // invoke next() at the end of a request to help with testing!
 };
