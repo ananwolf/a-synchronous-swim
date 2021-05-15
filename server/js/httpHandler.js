@@ -23,16 +23,24 @@ module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
 
   if (req.url === '/' && req.method === 'GET') {
-      res.writeHead(200, headers);
-      res.end(messageQueue.dequeue());
-    }
-
-    if (req.url === '/?command=randomMove' && req.method === 'GET') {
-      res.writeHead(200, headers);
-      res.end(getRandom());
-    } else {
     res.writeHead(200, headers);
+    res.end(queue.dequeue());
+  }
+
+  if (req.url === '/?command=randomMove' && req.method === 'GET') {
+    res.writeHead(200, headers);
+    res.end(getRandom());
+  }
+
+  if (req.url === '/' && req.method === 'POST') {
+    res.writeHead(200, headers);
+    req.on('data', (data) => {
+      queue.enqueue(data);
+    })
     res.end();
   }
+
+  res.writeHead(200, headers);
+  res.end();
   next(); // invoke next() at the end of a request to help with testing!
 };
